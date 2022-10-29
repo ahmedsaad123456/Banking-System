@@ -279,25 +279,12 @@ int last_ID(vector<clint> clints){
     return id;
 }
 //---------------------------------------------------------------------------------------------------------
-// the main Function to Run the App
-void BankApplication::Run(){
-    fstream file;
-    int choice, type_of_account;
-    string name , address , phone;
-    double balance , money , minimum_Balance;
-    // load the data form the file and push it into vector
-    vector<clint>ALL_Clints= loadClints(file);
-    
-    cout<<"Welcome to FCAI Banking Application"<<endl;
-    cout<<"1. Create a New Account "<<endl;
-    cout<<"2. List Clinets and Accounts"<<endl;
-    cout<<"3. Withdraw Money"<<endl;
-    cout<<"4. Deposit Money"<<endl;
-    cout<<"Please Enter Choice"<<endl;
-    cin >> choice;
-    cin.clear();  // this two line to slove the problem in next getline
-    cin.sync();
-    if(choice==1){
+// function to add clint to bank system and return false if it failed
+bool BankApplication::add_Clint(clint& new_clint, vector<clint> ALL_Clints){
+        fstream file;
+        int  type_of_account;
+        string name , address , phone;
+        double balance , money , minimum_Balance;
         cout<<"Please Enter Clint Name"<<endl;
         getline(cin , name);
         
@@ -311,10 +298,9 @@ void BankApplication::Run(){
         if(type_of_account==1){
             cout<<"please Enter the Starting Balance "<<endl;
             cin>>balance;
-            clint new_clint(name , address , phone , balance,last_ID(ALL_Clints)+1);
-            cout<<"An account was created with ID "<<new_clint.get_bankAccount().get_ID()
-            << " and Starting Balance "<<new_clint.get_bankAccount().get_balance()<<" L.E."<<endl;
+            clint new_clint2(name , address , phone , balance,last_ID(ALL_Clints)+1);
             // write the new clint into the file
+            new_clint=new_clint2;
             new_clint.write_to(file);
         }
         if(type_of_account==2){
@@ -322,17 +308,20 @@ void BankApplication::Run(){
             cin>>balance;
             cout<<"please Enter the minimum Balance "<<endl;
             cin>>minimum_Balance;
-            clint new_clint(name , address , phone , balance, minimum_Balance, last_ID(ALL_Clints)+1);
-            cout<<"An account was created with ID "<<new_clint.get_bankAccount().get_ID()
-             << " and Starting Balance "<<new_clint.get_bankAccount().get_balance()<<" L.E."
-             <<" and minimum balance "<<new_clint.get_SavingAcount().get_minimumBalance()<<" L.E. "<<endl;
+            clint new_clint2(name , address , phone , balance, minimum_Balance, last_ID(ALL_Clints)+1);
+           
             // write the new clint into the file
             new_clint.write_to(file);
+            new_clint=new_clint2;
         }
+        
         file.close();
-        }
-    if (choice ==2){
-        // to know type of Account basic or saving
+        return true;
+}
+//---------------------------------------------------------------------------------------------------------
+// function to show list of clints
+void BankApplication::listOfClints(vector<clint> ALL_Clints){
+    // to know type of Account basic or saving
         bool type_Account;
         // print all clint from the file
         for (int i=0 ; i<ALL_Clints.size(); i++){
@@ -353,12 +342,48 @@ void BankApplication::Run(){
                 cout<<"minimum Balance: "<<ALL_Clints[i].get_SavingAcount().get_minimumBalance()<<endl;
             }
 
-
-
-
-
         }
+}
+//---------------------------------------------------------------------------------------------------------
+// the main Function to Run the App
+void BankApplication::Run(){
+    fstream file;
+    int choice, type_of_account;
+    string name , address , phone;
+    double balance , money , minimum_Balance;
+    clint clnt;
+    // load the data form the file and push it into vector
+    vector<clint>ALL_Clints= loadClints(file);
+    
+    cout<<"Welcome to FCAI Banking Application"<<endl;
+    cout<<"1. Create a New Account "<<endl;
+    cout<<"2. List Clinets and Accounts"<<endl;
+    cout<<"3. Withdraw Money"<<endl;
+    cout<<"4. Deposit Money"<<endl;
+    cout<<"Please Enter Choice"<<endl;
+    cin >> choice;
+    cin.clear();  // this two line to slove the problem in next getline
+    cin.sync();
+    if(choice==1){
+        if(add_Clint(clnt, ALL_Clints)){
+            if(clnt.get_SavingAcount().get_minimumBalance()==0){
+                cout<<"An account was created with ID "<<clnt.get_bankAccount().get_ID()
+            << " and Starting Balance "<<clnt.get_bankAccount().get_balance()<<" L.E."<<endl;
+            }
+            else{
+                 cout<<"An account was created with ID "<<clnt.get_bankAccount().get_ID()
+             << " and Starting Balance "<<clnt.get_bankAccount().get_balance()<<" L.E."
+             <<" and minimum balance "<<clnt.get_SavingAcount().get_minimumBalance()<<" L.E. "<<endl;
 
+            }
+        }
+        else{
+            cout<<"ERROR , the Clint's data didn't add to bank system"<<endl;
+        }
+        
+        }
+    if (choice ==2){
+        listOfClints(ALL_Clints);
     }
     if(choice== 3){
 

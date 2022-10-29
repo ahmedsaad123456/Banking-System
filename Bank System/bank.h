@@ -61,6 +61,8 @@ class BankApplication
 {
     public:
         void Run();
+        bool add_Clint(clint& new_clint, vector<clint> ALL_Clints);
+        void listOfClints(vector<clint> ALL_Clints);
 };
 //----------------------------------------------------------------------------------------------------------
 //function to load the data from the file
