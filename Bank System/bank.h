@@ -1,3 +1,6 @@
+#ifndef BANK_H
+#define BANK_H
+
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -75,3 +78,4 @@ string ID (int id);
 //function to get the last id in the file
 int last_ID(vector<clint> clints);
 
+#endif
