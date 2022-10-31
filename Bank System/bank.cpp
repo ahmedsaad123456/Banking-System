@@ -180,18 +180,20 @@ double BankAccount::get_balance(){
 }
 //---------------------------------------------------------------------------------------------------------
 
-void BankAccount::withdraw(double money){
+bool BankAccount::withdraw(double money){
     while (money>balance){
         cout<<"Sorry. This is more than what you can withdraw"<<endl;
         cout<<"Please Enter The Amount to Withdraw"<<endl;
         cin>>money;
     }
     balance= balance - money;
+    return true;
 }
 //---------------------------------------------------------------------------------------------------------
 
-void BankAccount::deposit(double money){
+bool BankAccount::deposit(double money){
     balance = balance + money;
+    return true;
 }
 //---------------------------------------------------------------------------------------------------------
 
@@ -222,7 +224,7 @@ double SavingBankAccount::get_minimumBalance(){
 }
 //---------------------------------------------------------------------------------------------------------
 
-void SavingBankAccount::withdraw(double money){
+bool SavingBankAccount::withdraw(double money){
     if(get_balance()-money <minimumBalance ){
         cout<<"the Balance will be less than minimum Balance"<<endl;
         cout<<"your Balance is "<< get_balance()<<endl;
@@ -232,10 +234,11 @@ void SavingBankAccount::withdraw(double money){
     }
 
     withdraw(money);
+    return true;
 }
 //---------------------------------------------------------------------------------------------------------
 
-void SavingBankAccount::deposit(double money){
+bool SavingBankAccount::deposit(double money){
     while (money<100){
         cout<<"Sorry the money should be >=100"<<endl;
         cout<<"Please Enter the money again"<<endl;
@@ -243,6 +246,7 @@ void SavingBankAccount::deposit(double money){
     }
 
     deposit(money);
+    return true;
 }
 //---------------------------------------------------------------------------------------------------------
 
@@ -308,11 +312,17 @@ bool BankApplication::add_Clint(clint& new_clint, vector<clint> ALL_Clints){
             cin>>balance;
             cout<<"please Enter the minimum Balance "<<endl;
             cin>>minimum_Balance;
+           
             clint new_clint2(name , address , phone , balance, minimum_Balance, last_ID(ALL_Clints)+1);
+             if(minimum_Balance > balance){
+                return false;
+                
+            }
            
             // write the new clint into the file
-            new_clint.write_to(file);
             new_clint=new_clint2;
+            new_clint.write_to(file);
+            
         }
         
         file.close();

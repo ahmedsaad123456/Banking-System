@@ -16,8 +16,8 @@ class BankAccount {
         void set_ID(string ID);
         string get_ID();
         double get_balance();
-        void withdraw(double money);
-        void deposit(double money);
+        bool withdraw(double money);
+        bool deposit(double money);
 };
 //-----------------------------------------------------------------------------------------------------------
 class SavingBankAccount : public BankAccount 
@@ -29,8 +29,8 @@ class SavingBankAccount : public BankAccount
         SavingBankAccount();
         void set_minimumBalance(double min);
         double get_minimumBalance();
-        void withdraw(double money);
-        void deposit(double money);
+        bool withdraw(double money);
+        bool deposit(double money);
 };
 //----------------------------------------------------------------------------------------------------------
 class clint
@@ -63,6 +63,7 @@ class BankApplication
         void Run();
         bool add_Clint(clint& new_clint, vector<clint> ALL_Clints);
         void listOfClints(vector<clint> ALL_Clints);
+        
 };
 //----------------------------------------------------------------------------------------------------------
 //function to load the data from the file
