@@ -16,8 +16,8 @@ class BankAccount {
         void set_ID(string ID);
         string get_ID();
         double get_balance();
-        bool withdraw(double money);
-        bool deposit(double money);
+        int withdraw(double money);
+        int deposit(double money);
 };
 //-----------------------------------------------------------------------------------------------------------
 class SavingBankAccount : public BankAccount 
@@ -29,8 +29,8 @@ class SavingBankAccount : public BankAccount
         SavingBankAccount();
         void set_minimumBalance(double min);
         double get_minimumBalance();
-        bool withdraw(double money);
-        bool deposit(double money);
+        int withdraw(double money);
+        int deposit(double money);
 };
 //----------------------------------------------------------------------------------------------------------
 class clint
@@ -74,4 +74,8 @@ string ID (int id);
 
 //function to get the last id in the file
 int last_ID(vector<clint> clints);
+
+// function to convert id from string to int
+int id(string i);
+
 

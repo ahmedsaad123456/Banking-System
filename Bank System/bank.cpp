@@ -14,7 +14,8 @@ clint::clint(string N , string A  , string P, double B , double min,int id){
     Name= N ;
     Address = A;
     phone = P;
-    account.set_balance(B);
+    Saving_account.set_balance(B);
+    Saving_account.set_ID(ID(id));
     account.set_ID(ID(id));
     Saving_account.set_minimumBalance(min);
 
@@ -75,9 +76,17 @@ void clint::write_to(ostream & output){
     output<<Name<<endl;
     output<<Address<<endl;
     output<<phone<<endl;
+    if(Saving_account.get_minimumBalance()==0){
     output<<account.get_ID()<<endl;
     output<<account.get_balance()<<endl;
     output<<Saving_account.get_minimumBalance()<<endl;
+    }
+    else{
+    output<<Saving_account.get_ID()<<endl;
+    output<<Saving_account.get_balance()<<endl;
+    output<<Saving_account.get_minimumBalance()<<endl;
+
+    }
 
 }
 //----------------------------------------------------------------------------------------------------------
@@ -131,8 +140,13 @@ vector<clint> loadClints(fstream &file){
             stringstream geek(line);
             geek>> num;
             minB = num;
+            if(num==0){
+             clints.push_back(clint(N , A ,P , balance,id));
+            }
+            else{
             // push all data in the vector
             clints.push_back(clint(N , A ,P , balance, minB,id));
+            }
             //to read the next clint
             x=0;
         }
@@ -178,22 +192,36 @@ string BankAccount::get_ID(){
 double BankAccount::get_balance(){
     return balance;
 }
+int id(string i){
+    string new_id="";
+    int num=0;
+    // this line to get the string number id in FCAI-000 
+    // we need 000
+    new_id=new_id+i[6]+i[7]+i[8];
+    // this to convert string 000 to integer  0
+    stringstream geek(new_id);
+    geek>> num;
+    return num;
+}
 //---------------------------------------------------------------------------------------------------------
 
-bool BankAccount::withdraw(double money){
+int BankAccount::withdraw(double money){
     while (money>balance){
         cout<<"Sorry. This is more than what you can withdraw"<<endl;
         cout<<"Please Enter The Amount to Withdraw"<<endl;
         cin>>money;
     }
+    if(balance==0){
+        return 0;
+    }
     balance= balance - money;
-    return true;
+    return balance;
 }
 //---------------------------------------------------------------------------------------------------------
 
-bool BankAccount::deposit(double money){
+int BankAccount::deposit(double money){
     balance = balance + money;
-    return true;
+    return balance;
 }
 //---------------------------------------------------------------------------------------------------------
 
@@ -224,7 +252,7 @@ double SavingBankAccount::get_minimumBalance(){
 }
 //---------------------------------------------------------------------------------------------------------
 
-bool SavingBankAccount::withdraw(double money){
+int SavingBankAccount::withdraw(double money){
     if(get_balance()-money <minimumBalance ){
         cout<<"the Balance will be less than minimum Balance"<<endl;
         cout<<"your Balance is "<< get_balance()<<endl;
@@ -233,20 +261,20 @@ bool SavingBankAccount::withdraw(double money){
 
     }
 
-    withdraw(money);
-    return true;
+    
+    return BankAccount::withdraw(money);
 }
 //---------------------------------------------------------------------------------------------------------
 
-bool SavingBankAccount::deposit(double money){
+int SavingBankAccount::deposit(double money){
     while (money<100){
         cout<<"Sorry the money should be >=100"<<endl;
         cout<<"Please Enter the money again"<<endl;
         cin>>money;
     }
 
-    deposit(money);
-    return true;
+    
+    return BankAccount::deposit(money);
 }
 //---------------------------------------------------------------------------------------------------------
 
@@ -272,6 +300,7 @@ int last_ID(vector<clint> clints){
 
     //get the last element in th vector and get from it the last id 
     string last_ID= clints[clints.size()-1].get_bankAccount().get_ID();
+    
     // convert the string id to int id
     string new_id="";
     new_id= new_id + last_ID[6]+last_ID[7]+last_ID[8];
@@ -347,8 +376,8 @@ void BankApplication::listOfClints(vector<clint> ALL_Clints){
             }
             else
             {
-                cout<<"Account ID: "<<ALL_Clints[i].get_bankAccount().get_ID()<<" (Saving)"<<endl;
-                cout<<"Balance: "<<ALL_Clints[i].get_bankAccount().get_balance()<<endl;
+                cout<<"Account ID: "<<ALL_Clints[i].get_SavingAcount().get_ID()<<" (Saving)"<<endl;
+                cout<<"Balance: "<<ALL_Clints[i].get_SavingAcount().get_balance()<<endl;
                 cout<<"minimum Balance: "<<ALL_Clints[i].get_SavingAcount().get_minimumBalance()<<endl;
             }
 
@@ -381,8 +410,8 @@ void BankApplication::Run(){
             << " and Starting Balance "<<clnt.get_bankAccount().get_balance()<<" L.E."<<endl;
             }
             else{
-                 cout<<"An account was created with ID "<<clnt.get_bankAccount().get_ID()
-             << " and Starting Balance "<<clnt.get_bankAccount().get_balance()<<" L.E."
+                 cout<<"An account was created with ID "<<clnt.get_SavingAcount().get_ID()
+             << " and Starting Balance "<<clnt.get_SavingAcount().get_balance()<<" L.E."
              <<" and minimum balance "<<clnt.get_SavingAcount().get_minimumBalance()<<" L.E. "<<endl;
 
             }
@@ -396,6 +425,14 @@ void BankApplication::Run(){
         listOfClints(ALL_Clints);
     }
     if(choice== 3){
+        // basic account
+        /*clint c (ALL_Clints[0].get_name(), ALL_Clints[0].get_address(),ALL_Clints[0].get_phone(), ALL_Clints[0].get_bankAccount().withdraw(50), id(ALL_Clints[0].get_bankAccount().get_ID()));
+        ALL_Clints[0] = c;
+        */
+        //saving account
+        /*clint c (ALL_Clints[0].get_name(), ALL_Clints[0].get_address(),ALL_Clints[0].get_phone(), ALL_Clints[0].get_SavingAcount().withdraw(50),ALL_Clints[0].get_SavingAcount().get_minimumBalance(), id(ALL_Clints[0].get_SavingAcount().get_ID()));
+        ALL_Clints[0] = c;
+        */
 
     }
     if(choice == 4){
