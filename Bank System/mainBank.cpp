@@ -1,4 +1,4 @@
-#include "bank.cpp"
+#include "bank.h"
 
 int main(){
     BankApplication App;
