@@ -2,7 +2,7 @@ Ahmed saad
 asfasf
 456
 FCAI-001
-1200
+2600
 500
 asfas
 4545
@@ -14,7 +14,7 @@ asfasf
 safasf
 5454
 FCAI-003
-1500
+1000
 0
 fasdf
 sadfasdf

@@ -9,7 +9,6 @@ clint::clint(string N , string A  , string P, double B,int id){
     Saving_account.set_minimumBalance(0);
 }
 //----------------------------------------------------------------------------------------------------------
-
 clint::clint(string N , string A  , string P, double B , double min,int id){
     Name= N ;
     Address = A;
@@ -18,7 +17,6 @@ clint::clint(string N , string A  , string P, double B , double min,int id){
     Saving_account.set_ID(ID(id));
     account.set_ID(ID(id));
     Saving_account.set_minimumBalance(min);
-
 }
 //----------------------------------------------------------------------------------------------------------
 clint::clint(){
@@ -27,52 +25,42 @@ clint::clint(){
     phone = "None";
     account.set_balance(0);
     Saving_account.set_minimumBalance(0);
-    
 }
 //----------------------------------------------------------------------------------------------------------
-
 void clint::set_name(string N){
     Name = N;
 }
 //----------------------------------------------------------------------------------------------------------
-
 void clint::set_address(string A){
     Address= A ;
 }
 //----------------------------------------------------------------------------------------------------------
-
 void clint::set_phone(string P){
     phone = P;
 }
 //----------------------------------------------------------------------------------------------------------
-
 string clint::get_name(){
     return Name;
 }
 //----------------------------------------------------------------------------------------------------------
-
 string clint::get_address(){
     return Address;
 }
 //----------------------------------------------------------------------------------------------------------
-
 string clint::get_phone(){
     return phone;
 }
 //----------------------------------------------------------------------------------------------------------
-
 BankAccount clint::get_bankAccount(){
     return account;
 }
 //----------------------------------------------------------------------------------------------------------
-
 SavingBankAccount clint::get_SavingAcount(){
     return Saving_account;
 }
 //----------------------------------------------------------------------------------------------------------
 // function to write the new clint into file
 void clint::write_to(ostream & output){
-    
     output<<Name<<endl;
     output<<Address<<endl;
     output<<phone<<endl;
@@ -85,12 +73,9 @@ void clint::write_to(ostream & output){
     output<<Saving_account.get_ID()<<endl;
     output<<Saving_account.get_balance()<<endl;
     output<<Saving_account.get_minimumBalance()<<endl;
-
     }
-
 }
 //----------------------------------------------------------------------------------------------------------
-
 vector<clint> loadClints(fstream &file){
     file.open("users_data.txt", ios::out | ios::in | ios::app);
     string N ,A , P , line;
@@ -100,7 +85,6 @@ vector<clint> loadClints(fstream &file){
     SavingBankAccount S;
     // vector to load from the file in it
     vector <clint> clints;
-
     int x=1;
     while(getline(file, line)){
         if(x==1){
@@ -117,7 +101,6 @@ vector<clint> loadClints(fstream &file){
         }
         if(x==4){
             // x= 4 that mean this line is string id
-
             string new_id="";
             // this line to get the string number id in FCAI-000 
             // we need 000
@@ -150,15 +133,10 @@ vector<clint> loadClints(fstream &file){
             //to read the next clint
             x=0;
         }
-
         x++;
-
     }
-
     file.close();
-   
     return clints;
-   
 }
 //---------------------------------------------------------------------------------------------------------
 BankAccount::BankAccount(){
@@ -166,29 +144,23 @@ BankAccount::BankAccount(){
     balance=0;
 }
 //---------------------------------------------------------------------------------------------------------
-
 BankAccount::BankAccount(double B, int id){
-
     account_ID = ID(id);
     balance=B;    
 }
 //---------------------------------------------------------------------------------------------------------
-
 void BankAccount::set_balance(double B){
     balance= B;
 }
 //---------------------------------------------------------------------------------------------------------
-
 void BankAccount::set_ID(string ID){
     account_ID=ID;
 }
 //---------------------------------------------------------------------------------------------------------
-
 string BankAccount::get_ID(){
     return account_ID;
 }
 //---------------------------------------------------------------------------------------------------------
-
 double BankAccount::get_balance(){
     return balance;
 }
@@ -204,7 +176,6 @@ int id(string i){
     return num;
 }
 //---------------------------------------------------------------------------------------------------------
-
 int BankAccount::withdraw(double money){
     while (money>balance){
         cout<<"Sorry. This is more than what you can withdraw"<<endl;
@@ -218,69 +189,53 @@ int BankAccount::withdraw(double money){
     return balance;
 }
 //---------------------------------------------------------------------------------------------------------
-
 int BankAccount::deposit(double money){
     balance = balance + money;
     return balance;
 }
 //---------------------------------------------------------------------------------------------------------
-
 SavingBankAccount::SavingBankAccount(double B ,int id, double min) : BankAccount(B,id){
     if(B<min){
         cout<<"Sorry initial balance should be >= min Balance";
         set_balance(0);
         return;
     }
-    
     minimumBalance = min;
 }
 //---------------------------------------------------------------------------------------------------------
-
 SavingBankAccount::SavingBankAccount(): BankAccount(){
     minimumBalance=1000;
 }
 //---------------------------------------------------------------------------------------------------------
-
 void SavingBankAccount::set_minimumBalance(double min){
     minimumBalance = min;
 }
 //---------------------------------------------------------------------------------------------------------
-
-
 double SavingBankAccount::get_minimumBalance(){
     return minimumBalance;
 }
 //---------------------------------------------------------------------------------------------------------
-
 int SavingBankAccount::withdraw(double money){
     if(get_balance()-money <minimumBalance ){
         cout<<"the Balance will be less than minimum Balance"<<endl;
         cout<<"your Balance is "<< get_balance()<<endl;
         cout<<"Please Enter the money to withdraw"<<endl;
         cin>>money;
-
     }
-
-    
     return BankAccount::withdraw(money);
 }
 //---------------------------------------------------------------------------------------------------------
-
 int SavingBankAccount::deposit(double money){
     while (money<100){
         cout<<"Sorry the money should be >=100"<<endl;
         cout<<"Please Enter the money again"<<endl;
         cin>>money;
     }
-
-    
     return BankAccount::deposit(money);
 }
 //---------------------------------------------------------------------------------------------------------
-
 string ID (int id){
     string new_ID;
-    
     if (id>9){
         new_ID= "FCAI-0" + to_string(id);
     }
@@ -290,25 +245,18 @@ string ID (int id){
     if (id<10){
         new_ID = "FCAI-00" + to_string(id);
     }
-
     return new_ID;
-
 }
 //---------------------------------------------------------------------------------------------------------
-
 int last_ID(vector<clint> clints){
-
     //get the last element in th vector and get from it the last id 
     string last_ID= clints[clints.size()-1].get_bankAccount().get_ID();
-    
     // convert the string id to int id
     string new_id="";
     new_id= new_id + last_ID[6]+last_ID[7]+last_ID[8];
     stringstream geek(new_id);
     int id=0;
-
     geek>>id;
-
     return id;
 }
 //---------------------------------------------------------------------------------------------------------
@@ -320,7 +268,6 @@ bool BankApplication::add_Clint(clint& new_clint, vector<clint> ALL_Clints){
         double balance , money , minimum_Balance;
         cout<<"Please Enter Clint Name"<<endl;
         getline(cin , name);
-        
         cout<<"Please Enter Clint Address"<<endl;
         cin>>address;
         cout<<"please Enter Clint phone"<<endl;
@@ -341,19 +288,14 @@ bool BankApplication::add_Clint(clint& new_clint, vector<clint> ALL_Clints){
             cin>>balance;
             cout<<"please Enter the minimum Balance "<<endl;
             cin>>minimum_Balance;
-           
             clint new_clint2(name , address , phone , balance, minimum_Balance, last_ID(ALL_Clints)+1);
              if(minimum_Balance > balance){
-                return false;
-                
+                return false;   
             }
-           
             // write the new clint into the file
             new_clint=new_clint2;
             new_clint.write_to(file);
-            
         }
-        
         file.close();
         return true;
 }
@@ -380,7 +322,6 @@ void BankApplication::listOfClints(vector<clint> ALL_Clints){
                 cout<<"Balance: "<<ALL_Clints[i].get_SavingAcount().get_balance()<<endl;
                 cout<<"minimum Balance: "<<ALL_Clints[i].get_SavingAcount().get_minimumBalance()<<endl;
             }
-
         }
 }
 //---------------------------------------------------------------------------------------------------------
@@ -393,7 +334,6 @@ void BankApplication::Run(){
     clint clnt;
     // load the data form the file and push it into vector
     vector<clint>ALL_Clints= loadClints(file);
-    
     cout<<"Welcome to FCAI Banking Application"<<endl;
     cout<<"1. Create a New Account "<<endl;
     cout<<"2. List Clinets and Accounts"<<endl;
@@ -410,32 +350,102 @@ void BankApplication::Run(){
             << " and Starting Balance "<<clnt.get_bankAccount().get_balance()<<" L.E."<<endl;
             }
             else{
-                 cout<<"An account was created with ID "<<clnt.get_SavingAcount().get_ID()
+             cout<<"An account was created with ID "<<clnt.get_SavingAcount().get_ID()
              << " and Starting Balance "<<clnt.get_SavingAcount().get_balance()<<" L.E."
              <<" and minimum balance "<<clnt.get_SavingAcount().get_minimumBalance()<<" L.E. "<<endl;
-
             }
         }
         else{
             cout<<"ERROR , the Clint's data didn't add to bank system"<<endl;
         }
-        
         }
     if (choice ==2){
         listOfClints(ALL_Clints);
     }
     if(choice== 3){
-        // basic account
-        /*clint c (ALL_Clints[0].get_name(), ALL_Clints[0].get_address(),ALL_Clints[0].get_phone(), ALL_Clints[0].get_bankAccount().withdraw(50), id(ALL_Clints[0].get_bankAccount().get_ID()));
-        ALL_Clints[0] = c;
-        */
-        //saving account
-        /*clint c (ALL_Clints[0].get_name(), ALL_Clints[0].get_address(),ALL_Clints[0].get_phone(), ALL_Clints[0].get_SavingAcount().withdraw(50),ALL_Clints[0].get_SavingAcount().get_minimumBalance(), id(ALL_Clints[0].get_SavingAcount().get_ID()));
-        ALL_Clints[0] = c;
-        */
-
+        string userId;
+        int realId, money;
+        cout<<"Enter your ID in format FCAI-***"<<endl;
+        cin >> userId;
+        realId = id(userId);
+        if(realId>ALL_Clints.size()+1){
+            cout<<"ID is not exist"<<endl;
+        }
+        else{
+            cout<<"Account ID: "<<userId<<endl;
+            if(ALL_Clints[realId-1].get_SavingAcount().get_minimumBalance()==0){
+                cout<<"Account Type: "<<"Basic"<<endl;
+                cout<<"Balance: "<<ALL_Clints[realId-1].get_bankAccount().get_balance()<<endl;
+                cout<<"Please Enter The Amount to withdraw "<<endl;
+                cin>>money;
+                clint c (ALL_Clints[realId-1].get_name(), ALL_Clints[realId-1].get_address(),ALL_Clints[realId-1].get_phone(), ALL_Clints[realId-1].get_bankAccount().withdraw(money), id(ALL_Clints[realId-1].get_bankAccount().get_ID()));
+                ALL_Clints[realId-1] = c;
+                cout<<"Thank you"<<endl;
+                cout<<"Account ID: "<<userId<<endl;
+                cout<<"New Balance: "<<ALL_Clints[realId-1].get_bankAccount().get_balance()<<endl;
+            }
+            else{
+                cout<<"Account Type: "<<"Saving"<<endl;
+                cout<<"Balance: "<<ALL_Clints[realId-1].get_SavingAcount().get_balance()<<endl;
+                cout<<"Minimum Balance:"<<ALL_Clints[realId-1].get_SavingAcount().get_minimumBalance()<<endl;
+                cout<<"Please Enter The Amount to withdraw "<<endl;
+                cin>>money;
+                clint c (ALL_Clints[realId-1].get_name(), ALL_Clints[realId-1].get_address(),ALL_Clints[realId-1].get_phone(), ALL_Clints[realId-1].get_SavingAcount().withdraw(money),ALL_Clints[realId-1].get_SavingAcount().get_minimumBalance(), id(ALL_Clints[realId-1].get_SavingAcount().get_ID()));
+                ALL_Clints[realId-1] = c;
+                cout<<"Thank you"<<endl;
+                cout<<"Account ID: "<<userId<<endl;
+                cout<<"New Balance: "<<ALL_Clints[realId-1].get_SavingAcount().get_balance()<<endl;
+            }
+            file.open("users_data.txt", ios::out | ios::in | ios::trunc);
+            file.close();
+            file.open("users_data.txt", ios::out | ios::in | ios::app);
+            for(int i=0 ; i<ALL_Clints.size();i++){
+                ALL_Clints[i].write_to(file);
+            }
+            file.close();
+        }
     }
     if(choice == 4){
-
+        string userId;
+        int realId, money;
+        cout<<"Enter your ID in format FCAI-***"<<endl;
+        cin >> userId;
+        realId = id(userId);
+        if(realId>ALL_Clints.size()+1){
+            cout<<"ID is not exist"<<endl;
+        }
+        else{
+            cout<<"Account ID: "<<userId<<endl;
+            if(ALL_Clints[realId-1].get_SavingAcount().get_minimumBalance()==0){
+                cout<<"Account Type: "<<"Basic"<<endl;
+                cout<<"Balance: "<<ALL_Clints[realId-1].get_bankAccount().get_balance()<<endl;
+                cout<<"Please Enter The Amount to Deposit "<<endl;
+                cin>>money;
+                clint c (ALL_Clints[realId-1].get_name(), ALL_Clints[realId-1].get_address(),ALL_Clints[realId-1].get_phone(), ALL_Clints[realId-1].get_bankAccount().deposit(money), id(ALL_Clints[realId-1].get_bankAccount().get_ID()));
+                ALL_Clints[realId-1] = c;
+                cout<<"Thank you"<<endl;
+                cout<<"Account ID: "<<userId<<endl;
+                cout<<"New Balance: "<<ALL_Clints[realId-1].get_bankAccount().get_balance()<<endl;
+            }
+            else{
+                cout<<"Account Type: "<<"Saving"<<endl;
+                cout<<"Balance: "<<ALL_Clints[realId-1].get_SavingAcount().get_balance()<<endl;
+                cout<<"Minimum Balance:"<<ALL_Clints[realId-1].get_SavingAcount().get_minimumBalance()<<endl;
+                cout<<"Please Enter The Amount to Deposit "<<endl;
+                cin>>money;
+                clint c (ALL_Clints[realId-1].get_name(), ALL_Clints[realId-1].get_address(),ALL_Clints[realId-1].get_phone(), ALL_Clints[realId-1].get_SavingAcount().deposit(money),ALL_Clints[realId-1].get_SavingAcount().get_minimumBalance(), id(ALL_Clints[realId-1].get_SavingAcount().get_ID()));
+                ALL_Clints[realId-1] = c;
+                cout<<"Thank you"<<endl;
+                cout<<"Account ID: "<<userId<<endl;
+                cout<<"New Balance: "<<ALL_Clints[realId-1].get_SavingAcount().get_balance()<<endl;
+            }
+            file.open("users_data.txt", ios::out | ios::in | ios::trunc);
+            file.close();
+            file.open("users_data.txt", ios::out | ios::in | ios::app);
+            for(int i=0 ; i<ALL_Clints.size();i++){
+                ALL_Clints[i].write_to(file);
+            }
+            file.close();
+        }
     }
 }
