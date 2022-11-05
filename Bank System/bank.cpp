@@ -176,7 +176,7 @@ int id(string i){
     return num;
 }
 //---------------------------------------------------------------------------------------------------------
-int BankAccount::withdraw(double money){
+double BankAccount::withdraw(double money){
     while (money>balance){
         cout<<"Sorry. This is more than what you can withdraw"<<endl;
         cout<<"Please Enter The Amount to Withdraw"<<endl;
@@ -189,7 +189,7 @@ int BankAccount::withdraw(double money){
     return balance;
 }
 //---------------------------------------------------------------------------------------------------------
-int BankAccount::deposit(double money){
+double BankAccount::deposit(double money){
     balance = balance + money;
     return balance;
 }
@@ -215,7 +215,7 @@ double SavingBankAccount::get_minimumBalance(){
     return minimumBalance;
 }
 //---------------------------------------------------------------------------------------------------------
-int SavingBankAccount::withdraw(double money){
+double SavingBankAccount::withdraw(double money){
     if(get_balance()-money <minimumBalance ){
         cout<<"the Balance will be less than minimum Balance"<<endl;
         cout<<"your Balance is "<< get_balance()<<endl;
@@ -225,7 +225,7 @@ int SavingBankAccount::withdraw(double money){
     return BankAccount::withdraw(money);
 }
 //---------------------------------------------------------------------------------------------------------
-int SavingBankAccount::deposit(double money){
+double SavingBankAccount::deposit(double money){
     while (money<100){
         cout<<"Sorry the money should be >=100"<<endl;
         cout<<"Please Enter the money again"<<endl;

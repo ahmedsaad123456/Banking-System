@@ -1,9 +1,3 @@
-// FCAI - Obejct-Oriented Programming 1 - 2022 - Assignment 2
-// Program Name : Bank System
-// Last Modification 4/11/2022
-// Author1 and ID and Group: Ahmed Saad Ahmed          ID: 20210020  S9&S10
-// Author2 and ID and Group: Maryam Osama Mohamed      ID: 20211090  S9&S10
-// Author3 and ID and Group: Shahd Osama  Hamed        ID: 20211052  S9&S10
 #ifndef BANK_H
 #define BANK_H
 
@@ -75,16 +69,4 @@ class BankApplication
         
 };
 //----------------------------------------------------------------------------------------------------------
-//function to load the data from the file
-vector<clint> loadClints(fstream &file);
-
-// function to convert the integer id (2) to string id (FCAI-002)
-string ID (int id);
-
-//function to get the last id in the file
-int last_ID(vector<clint> clints);
-
-// function to convert id from string to int
-int id(string i);
-
 #endif
